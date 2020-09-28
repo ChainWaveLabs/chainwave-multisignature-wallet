@@ -1,0 +1,25 @@
+{
+  "name": "chainwave-multi-signature-wallet",
+  "version": "1.0.0",
+  "description": "Multi-Sig Ethereum Wallet",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "multisig",
+    "wallet",
+    "ethereum",
+    "solidity",
+    "blockchain",
+    "crypto"
+  ],
+  "author": "Benjamin M. Brown",
+  "license": "ISC",
+  "dependencies": {
+    "@openzeppelin/test-helpers": "^0.5.6"
+  }
+}
