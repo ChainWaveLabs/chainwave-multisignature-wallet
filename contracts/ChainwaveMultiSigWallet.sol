@@ -32,7 +32,7 @@ contract ChainwaveMultiSigWallet {
     }
     
 
-    function createTransfer(uint amount, address payable to) external onlyApprover {
+    function createTransfer(uint amount, address payable to) external onlyApprover() {
          transfers.push(
              Transfer(
               transfers.length,
@@ -44,9 +44,9 @@ contract ChainwaveMultiSigWallet {
     }
     
     
-   function approveTransfer(uint id) external{
+   function approveTransfer(uint id) external onlyApprover(){
        require(transfers[id].sent == false, "Error: Transfer has already been sent");
-       require(approvals[msg.sender][id] == false, "Error: Cannot approve a trasnfer twice");
+       require(approvals[msg.sender][id] == false, "Error: Cannot approve a transfer twice");
        
        approvals[msg.sender][id] == true;
        transfers[id].approvals ++;
