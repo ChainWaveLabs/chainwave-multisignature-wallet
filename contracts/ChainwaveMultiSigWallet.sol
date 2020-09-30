@@ -43,7 +43,6 @@ contract ChainwaveMultiSigWallet {
             ));
     }
     
-    
    function approveTransfer(uint id) external onlyApprover(){
        require(transfers[id].sent == false, "Error: Transfer has already been sent");
        require(approvals[msg.sender][id] == false, "Error: Cannot approve a transfer twice");
