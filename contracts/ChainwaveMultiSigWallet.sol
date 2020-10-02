@@ -16,7 +16,18 @@ contract ChainwaveMultiSigWallet {
     
     Transfer[] public transfers;
     
+    struct QuorumProposal{
+        uint id;
+        uint quorum;
+        uint approvals;
+        bool passed;
+    }
+
+    QuorumProposal[] public quorumProposals;
+    
     mapping(address => mapping(uint => bool)) public approvals;
+
+    mapping(address => mapping(uint => bool)) public quorumApprovals;
     
     constructor(address[] memory _approvers, uint _quorum) public {
         approvers = _approvers;
@@ -30,7 +41,34 @@ contract ChainwaveMultiSigWallet {
      function getTransfers() external view returns (Transfer[] memory){
         return transfers;
     }
-    
+
+    function getQuorumProposals() external view returns (QuorumProposal[] memory){
+        return quorumProposals;
+    }
+
+    function proposeQuorum(uint newQuorum) external onlyApprover() {
+         quorumProposals.push(
+             QuorumProposal(
+              quorumProposals.length,
+              newQuorum,
+              0,
+              false
+            ));
+    }
+
+    function approveQuorumProposal(uint id) external onlyApprover(){
+       require(quorumProposals[id].passed == false, "Error: Quorum proposals has already been passed");
+       require(quorumApprovals[msg.sender][id] == false, "Error: Cannot approve a quorum proposal twice");
+       
+       quorumApprovals[msg.sender][id] == true;
+       quorumProposals[id].approvals ++;
+       
+       if(quorumProposals[id].approvals >= quorum){
+           quorumProposals[id].passed = true;
+           uint newQuorum = quorumProposals[id].quorum;
+           quorum = newQuorum;
+       }
+    } 
 
     function createTransfer(uint amount, address payable to) external onlyApprover() {
          transfers.push(
@@ -57,8 +95,6 @@ contract ChainwaveMultiSigWallet {
            to.transfer(amount);
        }
    } 
-   
-   ///NATIVE RECEIPT OF FUNDS
    
    receive() external payable {}
     

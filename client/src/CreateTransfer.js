@@ -21,18 +21,21 @@ function CreateTransfer({ createTransfer }) {
     return (
         <div>
             <h2>Propose Transfer</h2>
-<Container fluid>    <Form onSubmit={(e) => submit(e)}>
+            <Container fluid>    <Form onSubmit={(e) => submit(e)}>
                 <Row>
-                    <Col>   <Form.Group controlId="formAmount">
-                        <Form.Label>Amount</Form.Label>
-                        <Form.Control type="text" placeholder="Enter amount" onChange={e => updateTransfer(e, 'amount')} />
-                        <Form.Text className="text-muted">
-                            Amount in gwei
-                     </Form.Text>
-                    </Form.Group></Col>
-                    <Col><Form.Group controlId="formTo">
+                    <Col>   
+                        <Form.Group controlId="formAmount">
+                            <Form.Label>Amount</Form.Label>
+                            <Form.Control type="text" placeholder="Enter amount" onChange={e => updateTransfer(e, 'amount')} />
+                            <Form.Text className="text-muted">
+                                Amount in gwei
+                             </Form.Text>
+                        </Form.Group>
+                    </Col>
+                    <Col>
+                    <Form.Group controlId="formTo">
                         <Form.Label>To</Form.Label>
-                        <Form.Control type="text" placeholder="Enter Eth Address" />
+                        <Form.Control type="text" placeholder="Enter Eth Address"  onChange={e => updateTransfer(e, 'to')} />
                     </Form.Group>
                     </Col>
                 </Row>
@@ -43,7 +46,7 @@ function CreateTransfer({ createTransfer }) {
                     Submit
                 </Button>
             </Form></Container>
-        
+
 
             {/* 
             <form onSubmit={(e) => submit(e)}>

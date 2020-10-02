@@ -1,7 +1,6 @@
 import React from 'react';
 import Button from 'react-bootstrap/esm/Button';
 import Table from 'react-bootstrap/Table';
-import './TransferList.css';
 
 function TransferList({ transfers,quorum, approveTransfer }) {
     return (
@@ -21,7 +20,7 @@ function TransferList({ transfers,quorum, approveTransfer }) {
                 <tbody>
                 {transfers.map(transfer => (
                     <tr key={transfer.id}>
-                            <td>{transfer.id}</td>
+                        <td>{transfer.id}</td>
                         <td>{transfer.amount}</td>
                         <td>{transfer.to}</td>
                         <td>{transfer.approvals}
