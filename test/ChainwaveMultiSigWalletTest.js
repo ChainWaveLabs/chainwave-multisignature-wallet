@@ -60,8 +60,7 @@ contract('ChainwaveMultiSigWallet', (accounts) =>{
         assert(balance ==='1000');
 
     });
-
-    
+  
     it('should send transfer if quorum reached to recipient approval', async() => {
         
         const transferAmt = 100;
@@ -76,8 +75,6 @@ contract('ChainwaveMultiSigWallet', (accounts) =>{
 
         assert(balanceAfter.sub(balanceOriginal).toNumber()=== transferAmt);
     });
-
-
 
     it('should FAIL transfer if sender is not approved', async()=>{
         await wallet.createTransfer(100, accounts[3], {from:accounts[0]});
@@ -97,6 +94,76 @@ contract('ChainwaveMultiSigWallet', (accounts) =>{
             wallet.approveTransfer(0, {from:accounts[1]}), 'Error: Transfer has already been sent'
           );
     });
+
+    //////////////////QUORUM MODIFICATIONS
+    it('should create a quorum proposal successfully', async()=>{
+        await wallet.proposeQuorum(1, {from:accounts[0]})
+        const quorumProposals = await wallet.getQuorumProposals();
+
+        assert(quorumProposals.length === 1);
+        assert(quorumProposals[0].id === '0'); 
+        assert(quorumProposals[0].quorum=== 1); 
+        assert(quorumProposals[0].aprovals === '0'); 
+        assert(quorumProposals[0].passed === false); 
+    });
+
+    it('should increment quorumProposal ', async()=>{
+        await wallet.proposeQuorum(1, {from:accounts[0]})
+        await wallet.approveQuorumProposal(0,{from: accounts[0]});
+
+        const quorumProposals = await wallet.getQuorumProposals();
+     
+        assert(quorumProposals[0].aprovals === '1'); 
+        assert(quorumProposals[0].passed === false); 
+    })
+    it('should FAIL to create a quorum proposal if by non-approver', async()=>{
+
+        await expectRevert.unspecified(
+            wallet.proposeQuorum(1,{from:accounts[4]})
+          );
+    })
+    it('should UPDATE contract quorum upon quorumProposal quorum reached', async()=>{
+        const quorumOriginal = await wallet.quorum();
+        await wallet.proposeQuorum(1, {from:accounts[0]})
+        await wallet.approveQuorumProposal(0,{from: accounts[0]});
+        await wallet.approveQuorumProposal(0,{from: accounts[1]});
+        const quorumAfter= await wallet.quorum();
+        assert(quorumAfter.sub(quorumOriginal).toNumber()=== 1);
+    })
+    it('should FAIL Quorum proposal approval if sender is not approved', async()=>{
+        await wallet.proposeQuorum(1, {from:accounts[0]})
+
+        await expectRevert.unspecified(
+            wallet.approveQuorumProposal(0, {from:accounts[4]})
+          );
+    })
+    it('should FAIL Quorum Proposal if proposal is already passed', async()=>{
+        await wallet.proposeQuorum(1, {from:accounts[0]})       
+        await wallet.approveQuorumProposal(0,{from: accounts[0]});
+        await wallet.approveQuorumProposal(0,{from: accounts[2]});
+
+        await expectRevert(
+            wallet.approveQuorumProposal(0, {from:accounts[1]}), 'Error: Quorum proposals has already been passed'
+          );
+    });
+
+    ///////////////////// APPROVER MODIFICATIONS
+    it('should create a approver proposal successfully', async()=>{
+
+        await wallet.proposeApproverChange(accounts[4], true, {from:accounts[0]})
+        const approverProposals = await wallet.getApproverProposals();
+
+        assert(approverProposals.length === 1);
+        assert(approverProposals[0].id === '0'); 
+        assert(approverProposals[0].newApprover=== accounts[4]); 
+        assert(approverProposals[0].aprovals === '0'); 
+        assert(approverProposals[0].passed === false); 
+
+    })
+    it('should FAIL to create a approver proposal if by non-approver', async()=>{})
+    it('should ADD a new approver to contract approvers upon quorum reached', async()=>{})
+    it('should REMOVE an existing approver from contract approvers upon quorum reached', async()=>{})
+  
 
 
 
