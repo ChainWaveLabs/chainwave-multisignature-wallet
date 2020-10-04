@@ -96,8 +96,8 @@ function App() {
         <header className="App-header">
           <Header approvers={approvers} quorum={quorum}></Header>
 
-          <ModifyQuorum proposeQuorum = {proposeQuorum}></ModifyQuorum>
-          <QuorumList quorumProposals = {quorumProposals} approveQuorum = {approveQuorum}></QuorumList>
+          {/* <ModifyQuorum proposeQuorum = {proposeQuorum}></ModifyQuorum>
+          <QuorumList quorumProposals = {quorumProposals} approveQuorum = {approveQuorum}></QuorumList> */}
 
           <CreateTransfer createTransfer={createTransfer}></CreateTransfer>
           <TransferList transfers={transfers} quorum={quorum} approveTransfer={approveTransfer}></TransferList>

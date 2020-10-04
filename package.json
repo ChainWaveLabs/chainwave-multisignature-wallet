@@ -1,7 +1,7 @@
 {
   "name": "chainwave-multi-signature-wallet",
   "version": "1.0.0",
-  "description": "Multi-Sig Ethereum Wallet",
+  "description": "Chainwave Multi-Sig Ethereum Wallet",
   "main": "truffle-config.js",
   "directories": {
     "test": "test"
@@ -17,7 +17,7 @@
     "blockchain",
     "crypto"
   ],
-  "author": "Benjamin M. Brown",
+  "author": "Benjamin M. Brown for Chainwave LLC",
   "license": "ISC",
   "dependencies": {
     "@openzeppelin/test-helpers": "^0.5.6"
