@@ -116,12 +116,14 @@ contract('ChainwaveMultiSigWallet', (accounts) =>{
         assert(quorumProposals[0].aprovals === '1'); 
         assert(quorumProposals[0].passed === false); 
     })
+
     it('should FAIL to create a quorum proposal if by non-approver', async()=>{
 
         await expectRevert.unspecified(
             wallet.proposeQuorum(1,{from:accounts[4]})
           );
     })
+
     it('should UPDATE contract quorum upon quorumProposal quorum reached', async()=>{
         const quorumOriginal = await wallet.quorum();
         await wallet.proposeQuorum(1, {from:accounts[0]})
@@ -160,9 +162,38 @@ contract('ChainwaveMultiSigWallet', (accounts) =>{
         assert(approverProposals[0].passed === false); 
 
     })
-    it('should FAIL to create a approver proposal if by non-approver', async()=>{})
-    it('should ADD a new approver to contract approvers upon quorum reached', async()=>{})
-    it('should REMOVE an existing approver from contract approvers upon quorum reached', async()=>{})
+    it('should FAIL to create a Approver Proposal if by non-approver', async()=>{
+        await expectRevert.unspecified(
+            wallet.proposeApproverChange(accounts[4],true,{from:accounts[5]})
+          );
+    })
+    it('should ADD a new approver to contract approvers upon quorum reached', async()=>{
+
+        await wallet.proposeApproverChange(accounts[4], true, {from:accounts[0]})
+
+        await wallet.approveApproverProposal(0, {from: accounts[0]});
+        await wallet.approveApproverProposal(0, {from: accounts[1]});
+        const approvers = await wallet.getApprovers();
+
+        assert(approvers[3] === accounts[4]);
+
+
+    })
+    it('should REMOVE an existing approver from contract approvers upon quorum reached', async()=>{
+       
+        await wallet.proposeApproverChange(accounts[2], false, {from:accounts[0]})
+        
+        const approversOrig = await wallet.getApprovers();
+
+        await wallet.approveApproverProposal(0, {from: accounts[0]});
+        await wallet.approveApproverProposal(0, {from: accounts[1]});
+
+        const approversEnd = await wallet.getApprovers();
+
+        assert(approversOrig.length ===2);
+
+
+    })
   
 
 

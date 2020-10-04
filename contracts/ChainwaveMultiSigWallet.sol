@@ -38,6 +38,8 @@ contract ChainwaveMultiSigWallet {
     mapping(address => mapping(uint256 => bool)) public quorumApprovals;
     mapping(address => mapping(uint256 => bool)) public approverApprovals;
 
+    /////////////EVENTS
+
     constructor(address[] memory _approvers, uint256 _quorum) public {
         approvers = _approvers;
         quorum = _quorum;
