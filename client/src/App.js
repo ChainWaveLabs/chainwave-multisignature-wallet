@@ -11,6 +11,11 @@ import CreateTransfer from './CreateTransfer';
 import ModifyQuorum from './ModifyQuorum';
 import QuorumList from './QuorumList';
 
+import ProposeApproverModification from './ProposeApproverModification';
+
+import ProposeApproverList from './ProposeApproverModification';
+
+
 function App() {
 
   const [web3, setWeb3] = useState(undefined);
@@ -20,6 +25,7 @@ function App() {
   const [quorum, setQuorum] = useState(undefined);
   const [transfers, setTransfers] = useState([]);
   const [quorumProposals, setQuorumProposals] = useState([]);
+  const [approverProposals, setApproverProposals] = useState([]);
 
   useEffect(() => {
     const init = async () => {
@@ -30,6 +36,7 @@ function App() {
       const quorum = await wallet.methods.quorum().call();
       const transfers = await wallet.methods.getTransfers().call();
       const quorumProposals = await wallet.methods.getQuorumProposals().call();
+      const approverProposals = await wallet.methods.getApproverProposals().call();
 
       setWeb3(web3);
       setAccounts(accounts);
@@ -38,6 +45,7 @@ function App() {
       setQuorum(quorum);
       setTransfers(transfers);
       setQuorumProposals(quorumProposals);
+      setApproverProposals(approverProposals);
     }
 
     init();
@@ -75,12 +83,30 @@ function App() {
       .send({ from: accounts[0] });
     updateQuorum();
   }
-
-  const updateQuorum = async () => {
+ const updateQuorum = async () => {
     const quorumProposals = await wallet.methods.getQuorumProposals().call();
-    setTransfers(quorumProposals);
+    setQuorum(quorumProposals);
   }
 
+  const updateApprovers = async () => {
+    const approvers = await wallet.methods.getApprovers().call();
+    setApprovers(approvers);
+  }
+
+  const proposeApprover = async newApproverProposal => {
+    await wallet.methods
+    .proposeApproverChange(newApproverProposal.newApprover, newApproverProposal.adding)
+    .send({ from: accounts[0] });
+    updateApprovers();
+
+  }
+
+  const approveApproverProposal = async approverProposalId => {
+    await wallet.methods
+      .approveTransfer(approverProposalId)
+      .send({ from: accounts[0] });
+      updateApprovers();
+  }
 
   if (typeof web3 === 'undefined' ||
     typeof accounts === 'undefined' ||
@@ -99,6 +125,9 @@ function App() {
           {/* <ModifyQuorum proposeQuorum = {proposeQuorum}></ModifyQuorum>
           <QuorumList quorumProposals = {quorumProposals} approveQuorum = {approveQuorum}></QuorumList> */}
 
+          <ProposeApproverModification proposeApprpver = {proposeApprover}></ProposeApproverModification>
+          <ProposeApproverList approverProposals = {approverProposals} approveApproverProposal = {approveApproverProposal} quorum={quorum} ></ProposeApproverList>
+          
           <CreateTransfer createTransfer={createTransfer}></CreateTransfer>
           <TransferList transfers={transfers} quorum={quorum} approveTransfer={approveTransfer}></TransferList>
           

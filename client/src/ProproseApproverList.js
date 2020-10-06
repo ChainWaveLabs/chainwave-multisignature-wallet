@@ -37,4 +37,4 @@ function ProposeApproverList({ approverProposals, approveApproverProposal, quoru
     )
 }
 
-export default QuorumList;
+export default ProposeApproverList;
