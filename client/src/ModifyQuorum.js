@@ -24,10 +24,10 @@ function ModifyQuorum({ proposeQuorum }) {
 
     return (
         <Container fluid>
-            <Card className="bg-dark" variant="primary">
+            <Card className="bg-dark mb-3" variant="primary">
                 <Card.Header><h4>Propose Quorum Change</h4></Card.Header>
                 <Card.Body>
-                <Alert variant="info">Change the quorum with this component. Increase or decrease the approvals needed for proposals to pass. 
+                <Alert variant="warning">Change the quorum with this component. Increase or decrease the approvals needed for proposals to pass. 
                 Must be greater than zero and less than the number of Aprovers.
                     </Alert>
                     <Form onSubmit={(e) => submit(e)}>
@@ -35,9 +35,9 @@ function ModifyQuorum({ proposeQuorum }) {
                             <InputGroup.Prepend>
                                 <InputGroup.Text>Quorum</InputGroup.Text>
                             </InputGroup.Prepend>
-                            <FormControl type="string" placeholder="Proposed Quorum ex. 5" onChange={e => updateQuorum(e, 'newQuorum')} />
+                            <FormControl type="number" id="newQuorum" placeholder="Proposed Quorum ex. 5" onChange={e => updateQuorum(e, 'newQuorum')} />
                             <InputGroup.Append>
-                            <Button type="submit">Submit Change</Button>
+                            <Button type="submit" variant="success">Submit Change</Button>
                             </InputGroup.Append>
                         </InputGroup>         
                     </Form>

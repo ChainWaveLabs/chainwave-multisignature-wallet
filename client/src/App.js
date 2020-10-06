@@ -23,6 +23,7 @@ function App() {
   const [web3, setWeb3] = useState(undefined);
   const [accounts, setAccounts] = useState(undefined);
   const [wallet, setWallet] = useState(undefined);
+  const [walletBalance, setWalletBalance] = useState(undefined);
   const [approvers, setApprovers] = useState([]);
   const [quorum, setQuorum] = useState(undefined);
   const [transfers, setTransfers] = useState([]);
@@ -34,6 +35,7 @@ function App() {
       const web3 = await getWeb3();
       const accounts = await web3.eth.getAccounts();
       const wallet = await getWallet(web3);
+      const walletBalance = await wallet.balance;
       const approvers = await wallet.methods.getApprovers().call();
       const quorum = await wallet.methods.quorum().call();
       const transfers = await wallet.methods.getTransfers().call();
@@ -43,6 +45,7 @@ function App() {
       setWeb3(web3);
       setAccounts(accounts);
       setWallet(wallet);
+      setWalletBalance(walletBalance)
       setApprovers(approvers);
       setQuorum(quorum);
       setTransfers(transfers);
@@ -52,6 +55,8 @@ function App() {
 
     init();
   }, []);
+
+  //////////TRANSFERS
 
   const createTransfer = async transfer => {
     await wallet.methods
@@ -72,35 +77,45 @@ function App() {
     setTransfers(transfers);
   }
 
+  //////////QUORUM
+ const updateQuorum = async () => {
+    const quorumProposals = await wallet.methods.getQuorumProposals().call();
+    setQuorumProposals(quorumProposals);
+  }
+
   const proposeQuorum = async newQuorum => {
+    console.log('quorumTest', newQuorum)
     await wallet.methods
-      .proposeQuorum(newQuorum)
+      .proposeQuorum(newQuorum.newQuorum)
       .send({ from: accounts[0] });
     updateQuorum();
   }
 
   const approveQuorum = async quorumId => {
     await wallet.methods
-      .approveQuorum(quorumId)
+      .approveQuorumProposal(quorumId)
       .send({ from: accounts[0] });
     updateQuorum();
   }
-  const updateQuorum = async () => {
-    const quorumProposals = await wallet.methods.getQuorumProposals().call();
-    setQuorum(quorumProposals);
-  }
 
+ 
+
+//////////APPROVERS
   const updateApprovers = async () => {
     const approvers = await wallet.methods.getApprovers().call();
     setApprovers(approvers);
+  }
+
+  const updateApproverProposals = async()=>{
+    const approverProposals = await wallet.methods.getApproverProposals().call();
+    setApproverProposals(approverProposals);
   }
 
   const proposeApprover = async newApproverProposal => {
     await wallet.methods
       .proposeApproverChange(newApproverProposal.newApprover, newApproverProposal.adding)
       .send({ from: accounts[0] });
-    updateApprovers();
-
+    updateApproverProposals();
   }
 
   const approveApproverProposal = async approverProposalId => {
@@ -120,24 +135,36 @@ function App() {
 
   return (
     <div className="App">
-        <header className="App-header">
-          <Header approvers={approvers} quorum={quorum}></Header>
-
-          <ModifyQuorum proposeQuorum={proposeQuorum}></ModifyQuorum>
-          <QuorumList quorumProposals={quorumProposals} approveQuorum={approveQuorum}></QuorumList>
-          <ProposeApproverModification proposeApprpver={proposeApprover}></ProposeApproverModification>
-          <ProposeApproverList approverProposals={approverProposals} approveApproverProposal={approveApproverProposal} quorum={quorum} ></ProposeApproverList>
+      <header className="App-header">
+        <Header approvers={approvers} quorum={quorum} walletBalance ={walletBalance}></Header>
+       {walletBalance}
+        <Container fluid className="mb-3">
+          <h2>Transfers</h2>
           <CreateTransfer createTransfer={createTransfer}></CreateTransfer>
           <TransferList transfers={transfers} quorum={quorum} approveTransfer={approveTransfer}></TransferList>
+        </Container>
 
-          <a
-            className="App-link"
-            href="https://chainwave.io/blockchain-development-company"
-            target="_blank"
-            rel="dofollow">
-            Blockchain Development by Chainwave
+        <Container fluid className="mb-3">
+        <h2>Quorum</h2>
+          <ModifyQuorum proposeQuorum={proposeQuorum}></ModifyQuorum>
+          <QuorumList quorumProposals={quorumProposals} approveQuorum={approveQuorum} quorum={quorum}></QuorumList>
+        </Container>
+
+        <Container fluid className="mb-3">
+        <h2>Approvers</h2>
+          <ProposeApproverModification proposeApprover={proposeApprover}></ProposeApproverModification>
+          <ProposeApproverList approverProposals={approverProposals} approveApproverProposal={approveApproverProposal} quorum={quorum} ></ProposeApproverList>
+        </Container>
+
+
+        <a
+          className="App-link"
+          href="https://chainwave.io/blockchain-development-company"
+          target="_blank"
+          rel="dofollow">
+          Blockchain Development by Chainwave
         </a>
-        </header>
+      </header>
 
     </div>
   );

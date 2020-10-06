@@ -25,7 +25,7 @@ function CreateTransfer({ createTransfer }) {
 
     return (
         <Container fluid>
-            <Card className="bg-dark" variant="primary">
+            <Card className="bg-dark mb-3" variant="primary">
                 <Card.Header><h4>Propose Transfer</h4></Card.Header>
                 <Card.Body>
                 <Alert variant="info">Propose a new transfer of funds. Select the amount in gwei and the receiver's eth address
@@ -36,7 +36,7 @@ function CreateTransfer({ createTransfer }) {
                             <InputGroup.Prepend>
                                 <InputGroup.Text>Amt:</InputGroup.Text>
                             </InputGroup.Prepend>
-                            <FormControl type="text" placeholder="Enter amount" onChange={e => updateTransfer(e, 'amount')} />
+                            <FormControl id="amount" type="text" placeholder="Enter amount" onChange={e => updateTransfer(e, 'amount')} />
                             <InputGroup.Append>
                                 <InputGroup.Text>gwei</InputGroup.Text>
                             </InputGroup.Append>
@@ -46,7 +46,7 @@ function CreateTransfer({ createTransfer }) {
                             <InputGroup.Prepend>
                                 <InputGroup.Text>To:</InputGroup.Text>
                             </InputGroup.Prepend>
-                            <FormControl type="text" placeholder="Enter Eth Address" onChange={e => updateTransfer(e, 'to')} />
+                            <FormControl  it="to" type="text" placeholder="Enter Eth Address" onChange={e => updateTransfer(e, 'to')} />
                         </InputGroup>
                         <Button type="submit">Submit Transfer Request</Button>
                     </Form>

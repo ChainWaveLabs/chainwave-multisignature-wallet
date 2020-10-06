@@ -24,7 +24,7 @@ function ProposeApproverModification({ proposeApprover }) {
 
     return (
         <Container fluid>
-            <Card className="bg-dark" variant="primary">
+            <Card className="bg-dark mb-3" variant="primary">
                 <Card.Header><h4>Propose Approver Change</h4></Card.Header>
                 <Card.Body>
                     <Alert variant="info">Here you can change the approvers / governance addresses for this multisig wallet. You can propose to add new approver addresses or remove existing addresses. 
@@ -35,7 +35,7 @@ function ProposeApproverModification({ proposeApprover }) {
                             <InputGroup.Prepend>
                                 <InputGroup.Text>Approver</InputGroup.Text>
                             </InputGroup.Prepend>
-                            <FormControl type="text" placeholder="Enter eth address" onChange={e => updateApproverProposal(e, 'newApprover')} />
+                            <FormControl type="string" placeholder="Enter eth address" onChange={e => updateApproverProposal(e, 'newApprover')} />
                             <InputGroup.Append>
                                 <InputGroup.Text>New?</InputGroup.Text>
                                 <InputGroup.Checkbox type="checkbox" placeholder="Check to add, uncheck to remove" onChange={e => updateApproverProposal(e, 'adding')}></InputGroup.Checkbox>

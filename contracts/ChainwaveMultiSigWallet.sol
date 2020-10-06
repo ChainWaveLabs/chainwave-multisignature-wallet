@@ -20,6 +20,7 @@ contract ChainwaveMultiSigWallet {
         uint256 quorum;
         uint256 approvals;
         bool passed;
+        bool ended;
     }
 
     QuorumProposal[] public quorumProposals;
@@ -135,7 +136,7 @@ contract ChainwaveMultiSigWallet {
 
     function proposeQuorum(uint256 newQuorum) external onlyApprover() {
         quorumProposals.push(
-            QuorumProposal(quorumProposals.length, newQuorum, 0, false)
+            QuorumProposal(quorumProposals.length, newQuorum, 0, false,false)
         );
     }
 
@@ -144,6 +145,23 @@ contract ChainwaveMultiSigWallet {
             quorumProposals[id].passed == false,
             "Error: Quorum proposals has already been passed"
         );
+
+         require(
+            quorumProposals[id].ended == false,
+            "Error: Quorum proposal has ended"
+        );
+
+        
+        require(
+            quorumProposals[id].quorum > approvers.length,
+            "Error: Quorum proposal has ended"
+        );
+
+        require(
+            quorumApprovals[msg.sender][id] == false,
+            "Error: Cannot approve a quorum proposal twice"
+        );
+
         require(
             quorumApprovals[msg.sender][id] == false,
             "Error: Cannot approve a quorum proposal twice"
@@ -154,6 +172,7 @@ contract ChainwaveMultiSigWallet {
 
         if (quorumProposals[id].approvals >= quorum) {
             quorumProposals[id].passed = true;
+            quorumProposals[id].ended = true;
             uint256 newQuorum = quorumProposals[id].quorum;
             quorum = newQuorum;
         }
