@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { getWeb3, getWallet } from './web3utils.js';
 import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import Header from './Header';
 import logo from './logo.svg';
 import './App.css';
+
 
 import TransferList from './TransferList';
 import CreateTransfer from './CreateTransfer';
@@ -12,8 +15,7 @@ import ModifyQuorum from './ModifyQuorum';
 import QuorumList from './QuorumList';
 
 import ProposeApproverModification from './ProposeApproverModification';
-
-import ProposeApproverList from './ProposeApproverModification';
+import ProposeApproverList from './ProproseApproverList';
 
 
 function App() {
@@ -83,7 +85,7 @@ function App() {
       .send({ from: accounts[0] });
     updateQuorum();
   }
- const updateQuorum = async () => {
+  const updateQuorum = async () => {
     const quorumProposals = await wallet.methods.getQuorumProposals().call();
     setQuorum(quorumProposals);
   }
@@ -95,8 +97,8 @@ function App() {
 
   const proposeApprover = async newApproverProposal => {
     await wallet.methods
-    .proposeApproverChange(newApproverProposal.newApprover, newApproverProposal.adding)
-    .send({ from: accounts[0] });
+      .proposeApproverChange(newApproverProposal.newApprover, newApproverProposal.adding)
+      .send({ from: accounts[0] });
     updateApprovers();
 
   }
@@ -105,7 +107,7 @@ function App() {
     await wallet.methods
       .approveTransfer(approverProposalId)
       .send({ from: accounts[0] });
-      updateApprovers();
+    updateApprovers();
   }
 
   if (typeof web3 === 'undefined' ||
@@ -118,28 +120,24 @@ function App() {
 
   return (
     <div className="App">
-      <Container>
         <header className="App-header">
           <Header approvers={approvers} quorum={quorum}></Header>
 
-          {/* <ModifyQuorum proposeQuorum = {proposeQuorum}></ModifyQuorum>
-          <QuorumList quorumProposals = {quorumProposals} approveQuorum = {approveQuorum}></QuorumList> */}
-
-          <ProposeApproverModification proposeApprpver = {proposeApprover}></ProposeApproverModification>
-          <ProposeApproverList approverProposals = {approverProposals} approveApproverProposal = {approveApproverProposal} quorum={quorum} ></ProposeApproverList>
-          
+          <ModifyQuorum proposeQuorum={proposeQuorum}></ModifyQuorum>
+          <QuorumList quorumProposals={quorumProposals} approveQuorum={approveQuorum}></QuorumList>
+          <ProposeApproverModification proposeApprpver={proposeApprover}></ProposeApproverModification>
+          <ProposeApproverList approverProposals={approverProposals} approveApproverProposal={approveApproverProposal} quorum={quorum} ></ProposeApproverList>
           <CreateTransfer createTransfer={createTransfer}></CreateTransfer>
           <TransferList transfers={transfers} quorum={quorum} approveTransfer={approveTransfer}></TransferList>
-          
+
           <a
             className="App-link"
-            href="https://chainwave.io"
+            href="https://chainwave.io/blockchain-development-company"
             target="_blank"
-            rel="noopener noreferrer">
-            by Chainwave
+            rel="dofollow">
+            Blockchain Development by Chainwave
         </a>
         </header>
-      </Container>
 
     </div>
   );

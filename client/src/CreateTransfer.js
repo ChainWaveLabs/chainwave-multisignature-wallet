@@ -5,6 +5,10 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
+import Card from 'react-bootstrap/Card';
+import InputGroup from 'react-bootstrap/InputGroup';
+import FormControl from 'react-bootstrap/Formcontrol';
+
 function CreateTransfer({ createTransfer }) {
     const [transfer, setTransfer] = useState(undefined);
 
@@ -19,47 +23,35 @@ function CreateTransfer({ createTransfer }) {
     }
 
     return (
-        <div>
-            <h2>Propose Transfer</h2>
-            <Container fluid>    <Form onSubmit={(e) => submit(e)}>
-                <Row>
-                    <Col>   
-                        <Form.Group controlId="formAmount">
-                            <Form.Label>Amount</Form.Label>
-                            <Form.Control type="text" placeholder="Enter amount" onChange={e => updateTransfer(e, 'amount')} />
-                            <Form.Text className="text-muted">
-                                Amount in gwei
-                             </Form.Text>
-                        </Form.Group>
-                    </Col>
-                    <Col>
-                    <Form.Group controlId="formTo">
-                        <Form.Label>To</Form.Label>
-                        <Form.Control type="text" placeholder="Enter Eth Address"  onChange={e => updateTransfer(e, 'to')} />
-                    </Form.Group>
-                    </Col>
-                </Row>
+        <Container fluid>
+            <Card className="bg-dark" variant="primary">
+                <Card.Header><h4>Propose Transfer</h4></Card.Header>
+                <Card.Body>
 
 
+                    <Form onSubmit={(e) => submit(e)}>
+                        <InputGroup variant="dark" className="bg-dark mb-3">
+                            <InputGroup.Prepend>
+                                <InputGroup.Text>Amount:</InputGroup.Text>
+                            </InputGroup.Prepend>
+                            <FormControl type="text" placeholder="Enter amount" onChange={e => updateTransfer(e, 'amount')} />
+                            <InputGroup.Append>
+                                <InputGroup.Text>gwei</InputGroup.Text>
+                            </InputGroup.Append>
+                        </InputGroup>
 
-                <Button variant="success" type="submit">
-                    Submit
-                </Button>
-            </Form></Container>
+                        <InputGroup variant="dark" className="bg-dark mb-3" >
+                            <InputGroup.Prepend>
+                                <InputGroup.Text>To:</InputGroup.Text>
+                            </InputGroup.Prepend>
+                            <FormControl type="text" placeholder="Enter Eth Address" onChange={e => updateTransfer(e, 'to')} />
+                        </InputGroup>
+                        <Button type="submit">Submit Transfer Request</Button>
+                    </Form>
+                </Card.Body>
+            </Card>
+        </Container>
 
-
-            {/* 
-            <form onSubmit={(e) => submit(e)}>
-
-                <label htmlFor="amount">Amount</label>
-                <input id="amount" type="text" onChange={e => updateTransfer(e, 'amount')}></input>
-
-                <label htmlFor="to">To</label>
-                <input id="to" type="text" onChange={e => updateTransfer(e, 'to')}></input>
-
-                <Button type="submit"> Submit </Button>
-            </form> */}
-        </div>
     )
 }
 
