@@ -8,6 +8,7 @@ import Container from 'react-bootstrap/Container';
 import Card from 'react-bootstrap/Card';
 import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/Formcontrol';
+import Alert from 'react-bootstrap/Alert';
 
 function CreateTransfer({ createTransfer }) {
     const [transfer, setTransfer] = useState(undefined);
@@ -27,12 +28,13 @@ function CreateTransfer({ createTransfer }) {
             <Card className="bg-dark" variant="primary">
                 <Card.Header><h4>Propose Transfer</h4></Card.Header>
                 <Card.Body>
-
+                <Alert variant="info">Propose a new transfer of funds. Select the amount in gwei and the receiver's eth address
+                    </Alert>
 
                     <Form onSubmit={(e) => submit(e)}>
                         <InputGroup variant="dark" className="bg-dark mb-3">
                             <InputGroup.Prepend>
-                                <InputGroup.Text>Amount:</InputGroup.Text>
+                                <InputGroup.Text>Amt:</InputGroup.Text>
                             </InputGroup.Prepend>
                             <FormControl type="text" placeholder="Enter amount" onChange={e => updateTransfer(e, 'amount')} />
                             <InputGroup.Append>

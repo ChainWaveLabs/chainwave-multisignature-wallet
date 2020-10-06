@@ -7,6 +7,7 @@ import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Card from 'react-bootstrap/Card';
 import InputGroup from 'react-bootstrap/InputGroup';
+import Alert from 'react-bootstrap/Alert';
 
 function ModifyQuorum({ proposeQuorum }) {
     const [newQuorum, setQuorum] = useState(undefined);
@@ -26,14 +27,17 @@ function ModifyQuorum({ proposeQuorum }) {
             <Card className="bg-dark" variant="primary">
                 <Card.Header><h4>Propose Quorum Change</h4></Card.Header>
                 <Card.Body>
+                <Alert variant="info">Change the quorum with this component. Increase or decrease the approvals needed for proposals to pass. 
+                Must be greater than zero and less than the number of Aprovers.
+                    </Alert>
                     <Form onSubmit={(e) => submit(e)}>
                         <InputGroup variant="dark" className="bg-dark">
                             <InputGroup.Prepend>
-                                <InputGroup.Text>New Quorum</InputGroup.Text>
+                                <InputGroup.Text>Quorum</InputGroup.Text>
                             </InputGroup.Prepend>
                             <FormControl type="string" placeholder="Proposed Quorum ex. 5" onChange={e => updateQuorum(e, 'newQuorum')} />
                             <InputGroup.Append>
-                            <Button  type="submit">Submit Quorum Change</Button>
+                            <Button type="submit">Submit Change</Button>
                             </InputGroup.Append>
                         </InputGroup>         
                     </Form>
