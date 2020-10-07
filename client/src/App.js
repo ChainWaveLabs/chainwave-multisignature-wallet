@@ -22,8 +22,8 @@ function App() {
 
   const [web3, setWeb3] = useState(undefined);
   const [accounts, setAccounts] = useState(undefined);
-  const [wallet, setWallet] = useState(undefined);
-  const [walletBalance, setWalletBalance] = useState(undefined);
+  const [chainwaveWallet, setChainwaveWallet] = useState(undefined);
+  const [chainwaveWalletBalance, setChainwaveWalletBalance] = useState(undefined);
   const [approvers, setApprovers] = useState([]);
   const [quorum, setQuorum] = useState(undefined);
   const [transfers, setTransfers] = useState([]);
@@ -34,18 +34,18 @@ function App() {
     const init = async () => {
       const web3 = await getWeb3();
       const accounts = await web3.eth.getAccounts();
-      const wallet = await getWallet(web3);
-      const walletBalance = await wallet.balance;
-      const approvers = await wallet.methods.getApprovers().call();
-      const quorum = await wallet.methods.quorum().call();
-      const transfers = await wallet.methods.getTransfers().call();
-      const quorumProposals = await wallet.methods.getQuorumProposals().call();
-      const approverProposals = await wallet.methods.getApproverProposals().call();
+      const chainwaveWallet = await getWallet(web3);
+      const walletBalance = await chainwaveWallet.balance;
+      const approvers = await chainwaveWallet.methods.getApprovers().call();
+      const quorum = await chainwaveWallet.methods.quorum().call();
+      const transfers = await chainwaveWallet.methods.getTransfers().call();
+      const quorumProposals = await chainwaveWallet.methods.getQuorumProposals().call();
+      const approverProposals = await chainwaveWallet.methods.getApproverProposals().call();
 
       setWeb3(web3);
       setAccounts(accounts);
-      setWallet(wallet);
-      setWalletBalance(walletBalance)
+      setChainwaveWallet(chainwaveWallet);
+      setChainwaveWalletBalance(chainwaveWalletBalance)
       setApprovers(approvers);
       setQuorum(quorum);
       setTransfers(transfers);
@@ -59,40 +59,40 @@ function App() {
   //////////TRANSFERS
 
   const createTransfer = async transfer => {
-    await wallet.methods
+    await chainwaveWallet.methods
       .createTransfer(transfer.amount, transfer.to)
       .send({ from: accounts[0] });
     updateTransfers();
   }
 
   const approveTransfer = async transferId => {
-    await wallet.methods
+    await chainwaveWallet.methods
       .approveTransfer(transferId)
       .send({ from: accounts[0] });
     updateTransfers();
   }
 
   const updateTransfers = async () => {
-    const transfers = await wallet.methods.getTransfers().call();
+    const transfers = await chainwaveWallet.methods.getTransfers().call();
     setTransfers(transfers);
   }
 
   //////////QUORUM
  const updateQuorum = async () => {
-    const quorumProposals = await wallet.methods.getQuorumProposals().call();
+    const quorumProposals = await chainwaveWallet.methods.getQuorumProposals().call();
     setQuorumProposals(quorumProposals);
   }
 
   const proposeQuorum = async newQuorum => {
     console.log('quorumTest', newQuorum)
-    await wallet.methods
+    await chainwaveWallet.methods
       .proposeQuorum(newQuorum.newQuorum)
       .send({ from: accounts[0] });
     updateQuorum();
   }
 
   const approveQuorum = async quorumId => {
-    await wallet.methods
+    await chainwaveWallet.methods
       .approveQuorumProposal(quorumId)
       .send({ from: accounts[0] });
     updateQuorum();
@@ -102,32 +102,32 @@ function App() {
 
 //////////APPROVERS
   const updateApprovers = async () => {
-    const approvers = await wallet.methods.getApprovers().call();
+    const approvers = await chainwaveWallet.methods.getApprovers().call();
     setApprovers(approvers);
   }
 
   const updateApproverProposals = async()=>{
-    const approverProposals = await wallet.methods.getApproverProposals().call();
+    const approverProposals = await chainwaveWallet.methods.getApproverProposals().call();
     setApproverProposals(approverProposals);
   }
 
   const proposeApprover = async newApproverProposal => {
-    await wallet.methods
+    await chainwaveWallet.methods
       .proposeApproverChange(newApproverProposal.newApprover, newApproverProposal.adding)
       .send({ from: accounts[0] });
     updateApproverProposals();
   }
 
   const approveApproverProposal = async approverProposalId => {
-    await wallet.methods
-      .approveTransfer(approverProposalId)
+    await chainwaveWallet.methods
+      .approveApproverProposal(approverProposalId)
       .send({ from: accounts[0] });
-    updateApprovers();
+      updateApproverProposals();
   }
 
   if (typeof web3 === 'undefined' ||
     typeof accounts === 'undefined' ||
-    typeof wallet === 'undefined' ||
+    typeof chainwaveWallet === 'undefined' ||
     approvers.length === 0 ||
     typeof quorum === 'undefined') {
     return <div>Loading...</div>;
@@ -136,8 +136,8 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <Header approvers={approvers} quorum={quorum} walletBalance ={walletBalance}></Header>
-       {walletBalance}
+        <Header approvers={approvers} quorum={quorum} chainwaveWalletBalance ={chainwaveWalletBalance}></Header>
+       {chainwaveWalletBalance}
         <Container fluid className="mb-3">
           <h2>Transfers</h2>
           <CreateTransfer createTransfer={createTransfer}></CreateTransfer>

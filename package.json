@@ -20,7 +20,7 @@
   "author": "Benjamin M. Brown for Chainwave LLC",
   "license": "ISC",
   "dependencies": {
-    "@openzeppelin/test-helpers": "^0.5.6"
-
+    "@openzeppelin/test-helpers": "^0.5.6",
+    "@truffle/hdwallet-provider": "^1.1.0"
   }
 }

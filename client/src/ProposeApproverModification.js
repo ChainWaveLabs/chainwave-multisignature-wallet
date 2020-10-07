@@ -27,7 +27,7 @@ function ProposeApproverModification({ proposeApprover }) {
             <Card className="bg-dark mb-3" variant="primary">
                 <Card.Header><h4>Propose Approver Change</h4></Card.Header>
                 <Card.Body>
-                    <Alert variant="info">Here you can change the approvers / governance addresses for this multisig wallet. You can propose to add new approver addresses or remove existing addresses. 
+                    <Alert variant="warning">Here you can change the approvers / governance addresses for this multisig wallet. You can propose to add new approver addresses or remove existing addresses. 
                        Add the etherum address and check the box if you'd like to add new. Unchecked removes an existing address.
                     </Alert>
                     <Form onSubmit={(e) => submit(e)}>
@@ -39,7 +39,7 @@ function ProposeApproverModification({ proposeApprover }) {
                             <InputGroup.Append>
                                 <InputGroup.Text>New?</InputGroup.Text>
                                 <InputGroup.Checkbox type="checkbox" placeholder="Check to add, uncheck to remove" onChange={e => updateApproverProposal(e, 'adding')}></InputGroup.Checkbox>
-                                <Button type="submit">Submit Change</Button>
+                                <Button type="submit" variant="success">Submit Change</Button>
                             </InputGroup.Append>
                         </InputGroup>
                     </Form>

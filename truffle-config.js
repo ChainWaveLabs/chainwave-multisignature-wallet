@@ -1,25 +1,7 @@
 const path = require('path');
-/**
- * Use this file to configure your truffle project. It's seeded with some
- * common settings for different networks and features like migrations,
- * compilation and testing. Uncomment the ones you need or modify
- * them to suit your project as necessary.
- *
- * More information about configuration can be found at:
- *
- * trufflesuite.com/docs/advanced/configuration
- *
- * To deploy via Infura you'll need a wallet provider (like @truffle/hdwallet-provider)
- * to sign your transactions before they're sent to a remote public node. Infura accounts
- * are available for free at: infura.io/register.
- *
- * You'll also need a mnemonic - the twelve word phrase the wallet uses to generate
- * public/private key pairs. If you're publishing your code to GitHub make sure you load this
- * phrase from a file you've .gitignored so it doesn't accidentally become public.
- *
- */
+//const proivder = require('@truffle/hdwallet-provider');
 
-// const HDWalletProvider = require('@truffle/hdwallet-provider');
+ const HDWalletProvider = require('@truffle/hdwallet-provider');
 // const infuraKey = "fj4jll3k.....";
 //
 // const fs = require('fs');
@@ -37,6 +19,18 @@ module.exports = {
    */
   contracts_build_directory: path.join(__dirname, "client/src/contracts"),
   networks: {
+    kovan:{
+      provider: () => new HDWalletProvider(
+      ['b0832e6f27dfc42ff8b74e6b7edf638194117c23d10748bac49df77e22983741',
+        '8d59e90f0ce6517cff40a3cd7c22a838c6eea6b48ded503855dd123d2b8ee2c8',
+        '4e562db77c3de4747ba9238c5e766dea88bf9610d7bcb330c92c77a768d315b0',
+        '3d8b2c4a92f48520d8406843b3b90826def9dd9a70c2154a134f63a42d60e8a6'],
+        'https://kovan.infura.io/v3/6a1f863988cd4960a2ee62e1799e58d5',
+        0,
+        4
+      ),
+      network_id: 42
+    }
     // Useful for testing. The `development` name is special - truffle uses it by default
     // if it's defined here and no other network is specified at the command line.
     // You should run a client (like ganache-cli, geth or parity) in a separate terminal
