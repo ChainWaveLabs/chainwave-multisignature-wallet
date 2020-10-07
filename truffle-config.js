@@ -1,11 +1,11 @@
 const path = require('path');
-//const proivder = require('@truffle/hdwallet-provider');
-
  const HDWalletProvider = require('@truffle/hdwallet-provider');
 // const infuraKey = "fj4jll3k.....";
 //
-// const fs = require('fs');
-// const mnemonic = fs.readFileSync(".secret").toString().trim();
+
+const fs = require('fs');
+
+const secrets = JSON.parse(fs.readFileSync(".secrets").toString().trim()) ;
 
 module.exports = {
   /**
@@ -21,10 +21,7 @@ module.exports = {
   networks: {
     kovan:{
       provider: () => new HDWalletProvider(
-      ['b0832e6f27dfc42ff8b74e6b7edf638194117c23d10748bac49df77e22983741',
-        '8d59e90f0ce6517cff40a3cd7c22a838c6eea6b48ded503855dd123d2b8ee2c8',
-        '4e562db77c3de4747ba9238c5e766dea88bf9610d7bcb330c92c77a768d315b0',
-        '3d8b2c4a92f48520d8406843b3b90826def9dd9a70c2154a134f63a42d60e8a6'],
+     secrets.privateKeys ,
         'https://kovan.infura.io/v3/6a1f863988cd4960a2ee62e1799e58d5',
         0,
         4
