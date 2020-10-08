@@ -1,11 +1,7 @@
 import React from 'react';
-
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import Form from 'react-bootstrap/Form';
-import FormControl from 'react-bootstrap/FormControl';
-import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 
 function Header({ approvers, quorum, walletBalance}) {
@@ -13,18 +9,23 @@ function Header({ approvers, quorum, walletBalance}) {
         <header>
              
             <Navbar bg="dark" variant="dark" expand="lg">
-                <Navbar.Brand href="#home">Chainwave Multi Signature Wallet</Navbar.Brand>
+                <Navbar.Brand href="#home">Chainwave Multi Signature Wallet (Kovan)</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">
                         <Nav.Link href="#home"> Quorum: {quorum}</Nav.Link>
+
                         <NavDropdown title="Approvers" id="basic-nav-dropdown">
                             {approvers.map(approver => (
-                                <NavDropdown.Item  key={approver}>{approver}</NavDropdown.Item>
+                                <NavDropdown.Item href={"https://kovan.etherscan.io/address/"+approver}  key={approver}>{approver}</NavDropdown.Item>
                             ))}
                         </NavDropdown>
-
-                        <Nav.Link href="#home"> Balance: {walletBalance}</Nav.Link>
+                        <NavDropdown title="Networks" id="basic-nav-dropdown">
+                            <NavDropdown.Item href="https://chainwave-multisignature-wallet.netlify.app/">MainNet</NavDropdown.Item>
+                            <NavDropdown.Item href="https://chainwave-multisig-wallet-kovan.netlify.app/">Kovan</NavDropdown.Item>
+                        </NavDropdown>
+                        <Nav.Link href="https://github.com/ChainWaveLabs/chainwave-multisignature-wallet">Github</Nav.Link>
+                  
                     </Nav>
    
                 </Navbar.Collapse>

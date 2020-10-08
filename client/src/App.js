@@ -130,7 +130,7 @@ function App() {
     typeof chainwaveWallet === 'undefined' ||
     approvers.length === 0 ||
     typeof quorum === 'undefined') {
-    return <div>Loading...</div>;
+    return <div>Loading... Please make sure to have metamask installed</div>;
   }
 
   return (
