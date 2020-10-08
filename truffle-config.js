@@ -1,11 +1,13 @@
 const path = require('path');
  const HDWalletProvider = require('@truffle/hdwallet-provider');
+const Web3 = require("web3");
+const web3 = new Web3();
 // const infuraKey = "fj4jll3k.....";
 //
 
 const fs = require('fs');
 
-const secrets = JSON.parse(fs.readFileSync(".secrets").toString().trim()) ;
+const secrets = JSON.parse(fs.readFileSync("secrets.json").toString().trim()) ;
 
 module.exports = {
   /**
@@ -19,9 +21,19 @@ module.exports = {
    */
   contracts_build_directory: path.join(__dirname, "client/src/contracts"),
   networks: {
+    live: {
+      provider: () => new HDWalletProvider(
+        secrets.privateKeys ,
+        'https://mainnet.infura.io/v3/6a1f863988cd4960a2ee62e1799e58d5',
+        0,
+        4
+        ),
+      network_id: liveNetworkId,
+      gasPrice: web3.utils.toWei('10', 'gwei')
+    },
     kovan:{
       provider: () => new HDWalletProvider(
-     secrets.privateKeys ,
+      secrets.privateKeys ,
         'https://kovan.infura.io/v3/6a1f863988cd4960a2ee62e1799e58d5',
         0,
         4

@@ -9,7 +9,7 @@ function Header({ approvers, quorum, walletBalance}) {
         <header>
              
             <Navbar bg="dark" variant="dark" expand="lg">
-                <Navbar.Brand href="#home">Chainwave Multi Signature Wallet (Kovan)</Navbar.Brand>
+                <Navbar.Brand href="#home">Chainwave Multi Signature Wallet (Main Net)</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">
@@ -17,7 +17,7 @@ function Header({ approvers, quorum, walletBalance}) {
 
                         <NavDropdown title="Approvers" id="basic-nav-dropdown">
                             {approvers.map(approver => (
-                                <NavDropdown.Item href={"https://kovan.etherscan.io/address/"+approver}  key={approver}>{approver}</NavDropdown.Item>
+                                <NavDropdown.Item href={"https://etherscan.io/address/"+approver}  key={approver}>{approver}</NavDropdown.Item>
                             ))}
                         </NavDropdown>
                         <NavDropdown title="Networks" id="basic-nav-dropdown">
