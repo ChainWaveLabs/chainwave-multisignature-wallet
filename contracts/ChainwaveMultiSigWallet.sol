@@ -1,5 +1,4 @@
-pragma solidity ^0.6.0;
-pragma experimental ABIEncoderV2;
+pragma solidity 0.8.6;
 
 contract ChainwaveMultiSigWallet {
     address[] public approvers;
@@ -72,14 +71,14 @@ contract ChainwaveMultiSigWallet {
 
     function proposeApproverChange(address approverAddr, bool adding)
         external
-        onlyApprover()
+        onlyApprover
     {
         bool approverIsPresent = false;
 
         for (uint256 i = 0; i < approvers.length; i++) {
             if (approvers[i] == approverAddr) {
                 approverIsPresent = true;
-            } 
+            }
         }
 
         if (adding && !approverIsPresent) {
@@ -91,31 +90,28 @@ contract ChainwaveMultiSigWallet {
                     0,
                     false
                 )
-          );
-        } 
-        
-        else if (!adding && approverIsPresent) {      
-          approverProposals.push(
-            ApproverProposal(
-                approverProposals.length,
-                approverAddr,
-                adding,
-                0,
-                false
-            )
+            );
+        } else if (!adding && approverIsPresent) {
+            approverProposals.push(
+                ApproverProposal(
+                    approverProposals.length,
+                    approverAddr,
+                    adding,
+                    0,
+                    false
+                )
             );
         }
-
     }
 
-    function approveApproverProposal(uint256 id) external onlyApprover() {
+    function approveApproverProposal(uint256 id) external onlyApprover {
         require(
             approverProposals[id].passed == false,
-            "Error: Approver proposals has already been passed"
+            'Error: Approver proposals has already been passed'
         );
         require(
             approverApprovals[msg.sender][id] == false,
-            "Error: Cannot approve an Approver proposal twice"
+            'Error: Cannot approve an Approver proposal twice'
         );
 
         approverApprovals[msg.sender][id] == true;
@@ -126,45 +122,43 @@ contract ChainwaveMultiSigWallet {
 
             //if passed, we get the address and the action (add or remove) and then do it
             if (approverProposals[id].adding == true) {
-               approvers.push( approverProposals[id].newApprover);
+                approvers.push(approverProposals[id].newApprover);
             } else if (approverProposals[id].adding == false) {
-                delete  approverProposals[id];
+                delete approverProposals[id];
             }
-      
         }
     }
 
-    function proposeQuorum(uint256 newQuorum) external onlyApprover() {
+    function proposeQuorum(uint256 newQuorum) external onlyApprover {
         quorumProposals.push(
-            QuorumProposal(quorumProposals.length, newQuorum, 0, false,false)
+            QuorumProposal(quorumProposals.length, newQuorum, 0, false, false)
         );
     }
 
-    function approveQuorumProposal(uint256 id) external onlyApprover() {
+    function approveQuorumProposal(uint256 id) external onlyApprover {
         require(
             quorumProposals[id].passed == false,
-            "Error: Quorum proposals has already been passed"
+            'Error: Quorum proposals has already been passed'
         );
 
-         require(
+        require(
             quorumProposals[id].ended == false,
-            "Error: Quorum proposal has ended"
+            'Error: Quorum proposal has ended'
         );
 
-        
         require(
             quorumProposals[id].quorum > approvers.length,
-            "Error: Quorum proposal has ended"
+            'Error: Quorum proposal has ended'
         );
 
         require(
             quorumApprovals[msg.sender][id] == false,
-            "Error: Cannot approve a quorum proposal twice"
+            'Error: Cannot approve a quorum proposal twice'
         );
 
         require(
             quorumApprovals[msg.sender][id] == false,
-            "Error: Cannot approve a quorum proposal twice"
+            'Error: Cannot approve a quorum proposal twice'
         );
 
         quorumApprovals[msg.sender][id] == true;
@@ -180,19 +174,19 @@ contract ChainwaveMultiSigWallet {
 
     function createTransfer(uint256 amount, address payable to)
         external
-        onlyApprover()
+        onlyApprover
     {
         transfers.push(Transfer(transfers.length, amount, to, 0, false));
     }
 
-    function approveTransfer(uint256 id) external onlyApprover() {
+    function approveTransfer(uint256 id) external onlyApprover {
         require(
             transfers[id].sent == false,
-            "Error: Transfer has already been sent"
+            'Error: Transfer has already been sent'
         );
         require(
             approvals[msg.sender][id] == false,
-            "Error: Cannot approve a transfer twice"
+            'Error: Cannot approve a transfer twice'
         );
 
         approvals[msg.sender][id] == true;

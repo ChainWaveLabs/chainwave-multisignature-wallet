@@ -1,13 +1,13 @@
 const path = require('path');
- const HDWalletProvider = require('@truffle/hdwallet-provider');
-const Web3 = require("web3");
+const HDWalletProvider = require('@truffle/hdwallet-provider');
+const Web3 = require('web3');
 const web3 = new Web3();
 // const infuraKey = "fj4jll3k.....";
 //
 
 const fs = require('fs');
 
-const secrets = JSON.parse(fs.readFileSync("secrets.json").toString().trim()) ;
+const secrets = JSON.parse(fs.readFileSync('secrets.json').toString().trim());
 
 module.exports = {
   /**
@@ -19,27 +19,46 @@ module.exports = {
    *
    * $ truffle test --network <network-name>
    */
-  contracts_build_directory: path.join(__dirname, "client/src/contracts"),
+  contracts_build_directory: path.join(__dirname, 'client/src/contracts'),
   networks: {
-    live: {
-      provider: () => new HDWalletProvider(
-        secrets.privateKeys ,
-        'https://mainnet.infura.io/v3/6a1f863988cd4960a2ee62e1799e58d5',
-        0,
-        4
-        ),
-      network_id: liveNetworkId,
-      gasPrice: web3.utils.toWei('10', 'gwei')
+    // live: {
+    //   provider: () =>
+    //     new HDWalletProvider(
+    //       secrets.privateKeys,
+    //       'https://mainnet.infura.io/v3/6a1f863988cd4960a2ee62e1799e58d5',
+    //       0,
+    //       4
+    //     ),
+    //   // network_id: liveNetworkId,
+    //   gasPrice: web3.utils.toWei('10', 'gwei'),
+    // },
+    kovan: {
+      provider: () => {
+        return new HDWalletProvider(
+          secrets.privateKeys,
+          'https://kovan.infura.io/v3/6a1f863988cd4960a2ee62e1799e58d5',
+          0,
+          4
+        );
+      },
+
+      network_id: 42,
+      gas: 5500000,
+      skipDryRun: true,
     },
-    kovan:{
-      provider: () => new HDWalletProvider(
-      secrets.privateKeys ,
-        'https://kovan.infura.io/v3/6a1f863988cd4960a2ee62e1799e58d5',
-        0,
-        4
-      ),
-      network_id: 42
-    }
+    // ropsten: {
+    //   provider: () => {
+    //     return new HDWalletProvider(
+    //       privateKeys,
+    //       "https://ropsten.infura.io/v3/" + process.env.INFURA_API_KEY,
+    //       0,
+    //       1
+    //     );
+    //   },
+    //   network_id: 3, // Ropsten's id
+    //   gas: 5500000, // Ropsten has a lower block limit than mainnet
+    //   skipDryRun: true
+    // },
     // Useful for testing. The `development` name is special - truffle uses it by default
     // if it's defined here and no other network is specified at the command line.
     // You should run a client (like ganache-cli, geth or parity) in a separate terminal
@@ -86,7 +105,7 @@ module.exports = {
   // Configure your compilers
   compilers: {
     solc: {
-       version: "0.6.0",    // Fetch exact version from solc-bin (default: truffle's version)
+      version: '0.8.6', // Fetch exact version from solc-bin (default: truffle's version)
       // docker: true,        // Use "0.5.1" you've installed locally with docker (default: false)
       // settings: {          // See the solidity docs for advice about optimization and evmVersion
       //  optimizer: {
