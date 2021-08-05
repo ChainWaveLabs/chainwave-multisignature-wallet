@@ -3,7 +3,7 @@ import ChainwaveMultiSigWallet from './contracts/ChainwaveMultiSigWallet.json';
 
 const getWeb3 = () => {
   //FOR LOCAL
-  return new Web3('http://localhost:9545');
+  return new Web3('http://localhost:7545');
 
   //FOR TESTNET & LIVE
   // return new Promise((resolve, reject) => {
